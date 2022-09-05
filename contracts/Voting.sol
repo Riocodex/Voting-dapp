@@ -23,12 +23,12 @@ contract Voting{
         uint256 electionEnding;
     }
     ElectionDetails[]elections;
-    mapping(string => ElectionDetails) private titleToElection;
+    mapping(string => ElectionDetails) public titleToElection;
     
    
     event CandidateName(string name);
-    CandidateDetails[] private candidates;
-    mapping(string => CandidateDetails) private numToCandidate;
+    CandidateDetails[] public candidates;
+    mapping(string => CandidateDetails) public numToCandidate;
 
     //variables
     uint256 private s_contractStartTime;
@@ -91,26 +91,35 @@ contract Voting{
             votes
         ));    
     }
+    function vote()public{
 
-    //view functions
+    }
+
+    //getter functions
      function getCandidates()public view returns(CandidateDetails[] memory){
         return candidates;
     }
-    function getElectionTitle()public view returns(string memory){
-         if(s_electionState != ElectionState.BUSY){
-            revert Voting__ElectionNotOpen();
-        }
-        return votingTitle;
-    }
+    // function getElectionTitle()public view returns(string memory){
+    //      if(s_electionState != ElectionState.BUSY){
+    //         revert Voting__ElectionNotOpen();
+    //     }
+    //     return votingTitle;
+    // }
 
-    function getRegisterationPeriod()public view returns(uint256){
+    // function getRegisterationPeriod()public view returns(uint256){
+    //      if(s_electionState != ElectionState.BUSY){
+    //         revert Voting__ElectionNotOpen();
+    //     }
+    //     return registrationPeriod;
+    // }   
+    // function getElectionPeriod()public view returns(uint256){
+    //     return electionEndingTime;
+    // }
+    function getElectionDetails()public view returns(ElectionDetails memory){
          if(s_electionState != ElectionState.BUSY){
             revert Voting__ElectionNotOpen();
         }
-        return registrationPeriod;
-    }   
-    function getElectionPeriod()public view returns(uint256){
-        return electionEndingTime;
+        return elections[elections.length-1];
     }
 
 }
