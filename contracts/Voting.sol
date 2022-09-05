@@ -17,30 +17,28 @@ contract Voting{
         address owner;
         uint256 numVotes;
     }
-    struct  ElectionDetails {
+    struct ElectionDetails{
         string title;
         uint256 registrationPeriod;
         uint256 electionEnding;
     }
     ElectionDetails[]elections;
-    mapping(string => ElectionDetails) public titleToElection;
+    mapping(string => ElectionDetails) private titleToElection;
     
    
     event CandidateName(string name);
-    CandidateDetails[] public candidates;
-    mapping(string => CandidateDetails) public numToCandidate;
+    CandidateDetails[] private candidates;
+    mapping(string => CandidateDetails) private numToCandidate;
 
     //variables
     uint256 private s_contractStartTime;
     ElectionState private s_electionState;
-    string public votingTitle;
+    string  votingTitle;
     uint256 registrationPeriod;
     uint256 electionEndingTime;
     uint256 electionStartTime;
     address owner;
     uint256 votes;
-
-   
 
     
 
@@ -79,6 +77,9 @@ contract Voting{
         if(s_electionState != ElectionState.BUSY){
             revert Voting__ElectionNotOpen();
         }
+        // if(electionStartTime - block.timestamp > registrationPeriod){
+        //     revert Voting__RegisterationPeriodOver();
+        // }
         numToCandidate[name]=CandidateDetails(
             name,
             msg.sender,
@@ -95,11 +96,21 @@ contract Voting{
      function getCandidates()public view returns(CandidateDetails[] memory){
         return candidates;
     }
-    function getElectionDetails()public view returns(ElectionDetails memory){
+    function getElectionTitle()public view returns(string memory){
          if(s_electionState != ElectionState.BUSY){
             revert Voting__ElectionNotOpen();
         }
-        return elections[elections.length-1];
+        return votingTitle;
+    }
+
+    function getRegisterationPeriod()public view returns(uint256){
+         if(s_electionState != ElectionState.BUSY){
+            revert Voting__ElectionNotOpen();
+        }
+        return registrationPeriod;
+    }   
+    function getElectionPeriod()public view returns(uint256){
+        return electionEndingTime;
     }
 
 }
