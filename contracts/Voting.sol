@@ -17,6 +17,14 @@ contract Voting{
         address owner;
         uint256 numVotes;
     }
+    struct  ElectionDetails {
+        string title;
+        uint256 registrationPeriod;
+        uint256 electionEnding;
+    }
+    ElectionDetails[]elections;
+    mapping(string => ElectionDetails) public titleToElection;
+    
    
     event CandidateName(string name);
     CandidateDetails[] public candidates;
@@ -31,6 +39,8 @@ contract Voting{
     uint256 electionStartTime;
     address owner;
     uint256 votes;
+
+   
 
     
 
@@ -47,6 +57,18 @@ contract Voting{
         if(s_electionState != ElectionState.OPEN){
             revert Voting__ElectionNotOpen();
         }
+        titleToElection[_title] = ElectionDetails(
+            _title,
+            _registrationPeriod,
+            _endingTime
+        );
+        elections.push(ElectionDetails(
+            _title,
+            _registrationPeriod,
+            _endingTime
+        ));
+
+
         votingTitle = _title;
         registrationPeriod = _registrationPeriod;
         electionEndingTime = _endingTime;
@@ -70,7 +92,14 @@ contract Voting{
     }
 
     //view functions
-    
-    
+     function getCandidates()public view returns(CandidateDetails[] memory){
+        return candidates;
+    }
+    function getElectionDetails()public view returns(ElectionDetails memory){
+         if(s_electionState != ElectionState.BUSY){
+            revert Voting__ElectionNotOpen();
+        }
+        return elections[elections.length-1];
+    }
 
 }
