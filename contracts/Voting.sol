@@ -91,8 +91,8 @@ contract Voting{
             votes
         ));    
     }
-    function vote()public{
-
+    function vote(string memory _name)public{
+        numToCandidate[_name].numVotes++;
     }
 
     //getter functions
