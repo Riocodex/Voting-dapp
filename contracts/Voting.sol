@@ -40,7 +40,8 @@ contract Voting{
     address owner;
     uint256 votes;
     uint256 highestVotes = 0;
-    CandidateDetails[] winner;
+    string winner;
+    CandidateDetails[] winnerDetails;
 
     
 
@@ -95,38 +96,35 @@ contract Voting{
     }
     function vote(string memory _name)public{
         numToCandidate[_name].numVotes++;
+        //to update value to the array
+        for(uint256 i = 0; i<candidates.length; i++){
+            if(keccak256(abi.encodePacked((candidates[i].name))) == keccak256(abi.encodePacked((_name)))){
+                candidates[i].numVotes++;
+            }
+        }
     }
+    
 
     //getter functions
      function getCandidates()public view returns(CandidateDetails[] memory){
         return candidates;
     }
-        function check()public view returns(CandidateDetails[] memory){
-            
+        function check(uint256 _num)public view returns(uint256){
+            return candidates[_num].numVotes;
         }
-    // function decideWinner()public view returns(string memory name){
-    //     for(uint256 i = 0; i<candidates.length; i++){
-    //         if(candidates[i].numVotes > highestVotes ){
-    //             highestVotes == numToCandidate[_name].numVotes ;
-    //         }
-    //     }
-    // }
-    // function getElectionTitle()public view returns(string memory){
-    //      if(s_electionState != ElectionState.BUSY){
-    //         revert Voting__ElectionNotOpen();
-    //     }
-    //     return votingTitle;
-    // }
-
-    // function getRegisterationPeriod()public view returns(uint256){
-    //      if(s_electionState != ElectionState.BUSY){
-    //         revert Voting__ElectionNotOpen();
-    //     }
-    //     return registrationPeriod;
-    // }   
-    // function getElectionPeriod()public view returns(uint256){
-    //     return electionEndingTime;
-    // }
+    function decideWinner()public{
+        for(uint256 i = 0; i<candidates.length; i++){
+            if(candidates[i].numVotes > highestVotes ){
+                highestVotes == candidates[i].numVotes ;
+                winner = candidates[i].name;
+            }
+        }
+        
+    }
+    function viewWiner(uint256 /*num*/)public view returns (string memory name){
+        return winner;
+    }
+    
     function getElectionDetails()public view returns(ElectionDetails memory){
          if(s_electionState != ElectionState.BUSY){
             revert Voting__ElectionNotOpen();
