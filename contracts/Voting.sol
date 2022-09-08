@@ -7,6 +7,7 @@ error Voting__RegisterationPeriodOver();
 error Voting__EndOfElection();
 error Voting__UserAlreadyExists();
 error Voting__UserDoesntExist();
+error Voting__YouHaveAlreadyVoted();
 
 contract Voting{
     //type declarations
@@ -25,7 +26,7 @@ contract Voting{
         uint256 electionEnding;
     }
     struct VoterDetails{
-        address voter;
+        address owner;
     }
     mapping(address => VoterDetails) public addresstoVoters;
 
@@ -123,10 +124,14 @@ contract Voting{
             revert Voting__ElectionNotOpen();
         }
            //if user name doesnt exists
-        for(uint256 i = 0; i < candidates.length ; i++){
-            if( keccak256(abi.encodePacked((candidates[i].name))) != keccak256(abi.encodePacked((_name)))){
-                revert Voting__UserDoesntExist();
-            }
+        // for(uint256 i = 0; i < candidates.length ; i++){
+        //     if( keccak256(abi.encodePacked((candidates[i].name))) == keccak256(abi.encodePacked((_name)))){
+        //         revert Voting__UserDoesntExist();
+        //     }
+        // }
+        //if voter has already voted before
+        if(addresstoVoters[msg.sender].owner == msg.sender){
+            revert Voting__YouHaveAlreadyVoted();
         }
         numToCandidate[_name].numVotes++;
         //to update value to the array
@@ -139,8 +144,6 @@ contract Voting{
         addresstoVoters[msg.sender]=VoterDetails(
             msg.sender
         );
-
-
     }
     
 
