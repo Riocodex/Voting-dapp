@@ -5,6 +5,8 @@ error Voting__SendMoreEthToVote();
 error Voting__ElectionNotOpen();
 error Voting__RegisterationPeriodOver();
 error Voting__EndOfElection();
+error Voting__UserAlreadyExists();
+error Voting__UserDoesntExist();
 
 contract Voting{
     //type declarations
@@ -22,6 +24,11 @@ contract Voting{
         uint256 registrationPeriod;
         uint256 electionEnding;
     }
+    struct VoterDetails{
+        address voter;
+    }
+    mapping(address => VoterDetails) public addresstoVoters;
+
     ElectionDetails[]elections;
     mapping(string => ElectionDetails) public titleToElection;
     
@@ -76,25 +83,51 @@ contract Voting{
         s_electionState = ElectionState.BUSY;
         electionStartTime = block.timestamp;
     }
-    function register(string memory name)public{
+    function register(string memory _name)public{
+        //if election is not open
         if(s_electionState != ElectionState.BUSY){
             revert Voting__ElectionNotOpen();
         }
+        //if registeration time is already over
         // if(electionStartTime - block.timestamp > registrationPeriod){
         //     revert Voting__RegisterationPeriodOver();
         // }
-        numToCandidate[name]=CandidateDetails(
-            name,
+        //if user name already exists
+        for(uint256 i = 0; i < candidates.length ; i++){
+            if( keccak256(abi.encodePacked((candidates[i].name))) == keccak256(abi.encodePacked((_name)))){
+                revert Voting__UserAlreadyExists();
+            }
+        }
+        //if user address already exists
+         for(uint256 i = 0; i < candidates.length ; i++){
+            if( candidates[i].owner == msg.sender){
+                revert Voting__UserAlreadyExists();
+            }
+        }
+        
+        
+        numToCandidate[_name]=CandidateDetails(
+            _name,
             msg.sender,
             votes
         );
         candidates.push(CandidateDetails(
-            name,
+            _name,
             msg.sender,
             votes
         ));    
     }
     function vote(string memory _name)public{
+          //if election is not open
+        if(s_electionState != ElectionState.BUSY){
+            revert Voting__ElectionNotOpen();
+        }
+           //if user name doesnt exists
+        for(uint256 i = 0; i < candidates.length ; i++){
+            if( keccak256(abi.encodePacked((candidates[i].name))) != keccak256(abi.encodePacked((_name)))){
+                revert Voting__UserDoesntExist();
+            }
+        }
         numToCandidate[_name].numVotes++;
         //to update value to the array
         for(uint256 i = 0; i<candidates.length; i++){
@@ -102,6 +135,12 @@ contract Voting{
                 candidates[i].numVotes++;
             }
         }
+        //adding users to voters array
+        addresstoVoters[msg.sender]=VoterDetails(
+            msg.sender
+        );
+
+
     }
     
 
@@ -112,7 +151,7 @@ contract Voting{
         function check(uint256 _num)public view returns(uint256){
             return candidates[_num].numVotes;
         }
-    function decideWinner()public{
+    function decideWinner()public {
         for(uint256 i = 0; i<candidates.length; i++){
             if(candidates[i].numVotes > highestVotes ){
                 highestVotes == candidates[i].numVotes ;
@@ -121,7 +160,7 @@ contract Voting{
         }
         
     }
-    function viewWiner(uint256 /*num*/)public view returns (string memory name){
+    function viewWiner()public view returns (string memory name){
         return winner;
     }
     
