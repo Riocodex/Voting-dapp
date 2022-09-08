@@ -160,7 +160,7 @@ contract Voting{
         }
         
     }
-    function viewWiner()public view returns (string memory name){
+    function viewWinner()public view returns (string memory name){
         return winner;
     }
     
