@@ -157,13 +157,17 @@ contract Voting{
     function decideWinner()public {
         for(uint256 i = 0; i<candidates.length; i++){
             if(candidates[i].numVotes > highestVotes ){
-                highestVotes == candidates[i].numVotes ;
+                highestVotes = candidates[i].numVotes ;   
+            }
+        }
+        for(uint256 i = 0; i< candidates.length; i++){
+            if(candidates[i]. numVotes == highestVotes){
                 winner = candidates[i].name;
             }
         }
         
     }
-    function viewWinner()public view returns (string memory name){
+    function viewWinner(uint256 /*sum*/)public view returns (string memory name){
         return winner;
     }
     
