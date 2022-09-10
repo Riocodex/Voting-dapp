@@ -29,7 +29,7 @@ async function main() {
   // Withdraw funds if there are funds to withdraw.
   if (contractBalance !== "0.0") {
     console.log("withdrawing funds..")
-    const withdrawTxn = await votingContract.withdrawTips();
+    const withdrawTxn = await votingContract.withdraw();
     await withdrawTxn.wait();
   } else {
     console.log("no funds to withdraw!");
