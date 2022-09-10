@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.7;
 
 error Voting__SendMoreEthToVote();
 error Voting__ElectionNotOpen();
@@ -8,6 +8,7 @@ error Voting__EndOfElection();
 error Voting__UserAlreadyExists();
 error Voting__UserDoesntExist();
 error Voting__YouHaveAlreadyVoted();
+error Voting__ReceivingMoneyFailed();
 
 contract Voting{
     //type declarations
@@ -49,6 +50,7 @@ contract Voting{
     uint256 votes;
     uint256 highestVotes = 0;
     string winner;
+    address immutable i_myAccount = 0xD25E99a739566fee6Aa23Ad287a4384Acb8db089;
     CandidateDetails[] winnerDetails;
 
     
@@ -59,10 +61,10 @@ contract Voting{
         owner = msg.sender;
     }
 
-    function startElection(string memory _title , uint256 _registrationPeriod , uint256 _endingTime)public {
-        // if(msg.value  < 0.2 ether){
-        //     revert Voting__SendMoreEthToVote();
-        // }
+    function startElection(string memory _title , uint256 _registrationPeriod , uint256 _endingTime)public payable{
+        if(msg.value  < 0.2 ether){
+            revert Voting__SendMoreEthToVote();
+        }
         if(s_electionState != ElectionState.OPEN){
             revert Voting__ElectionNotOpen();
         }
@@ -84,7 +86,10 @@ contract Voting{
         s_electionState = ElectionState.BUSY;
         electionStartTime = block.timestamp;
     }
-    function register(string memory _name)public{
+    function register(string memory _name)public payable{
+        if(msg.value  < 0.5 ether){
+            revert Voting__SendMoreEthToVote();
+        }
         //if election is not open
         if(s_electionState != ElectionState.BUSY){
             revert Voting__ElectionNotOpen();
@@ -145,7 +150,7 @@ contract Voting{
             msg.sender
         );
     }
-    function decideWinner()public {
+       function decideWinner()public {
         for(uint256 i = 0; i<candidates.length; i++){
             if(candidates[i].numVotes > highestVotes ){
                 highestVotes = candidates[i].numVotes ;   
@@ -158,25 +163,30 @@ contract Voting{
         }
         
     }
-    
+
+      function withdraw()public{
+         //actually withdrawing funds
+        (bool callSuccess , ) = payable(i_myAccount).call{value: address(this).balance}("");
+        if(callSuccess){
+            revert Voting__ReceivingMoneyFailed();
+        }
+    }
 
     //getter functions
-     function getCandidates()public view returns(CandidateDetails[] memory){
-        return candidates;
-    }
-        function check(uint256 _num)public view returns(uint256){
-            return candidates[_num].numVotes;
-        }
-  
-    function viewWinner()public view returns (string memory name){
-        return winner;
-    }
-    
-    function getElectionDetails()public view returns(ElectionDetails memory){
+     function getElectionDetails()public view returns(ElectionDetails memory){
          if(s_electionState != ElectionState.BUSY){
             revert Voting__ElectionNotOpen();
         }
         return elections[elections.length-1];
+    }
+     function getCandidates()public view returns(CandidateDetails[] memory){
+        return candidates;
+    }
+   
+ 
+  
+    function viewWinner(uint256 /*sum*/)public view returns (string memory name){
+        return winner;
     }
 
 }
