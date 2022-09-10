@@ -43,8 +43,8 @@ let candidates = await votingContract.getCandidates();
 console.log("candidates for the election are: ", candidates);
 
 //return winner
-let winner = await votingContract.viewWinner(2);
-console.log("and the winner of this eletion is...." , winner);
+let winner = await votingContract.viewWinner();
+console.log("and the winner of this election is...." , winner);
 }
 
 main()

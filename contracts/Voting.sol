@@ -145,15 +145,6 @@ contract Voting{
             msg.sender
         );
     }
-    
-
-    //getter functions
-     function getCandidates()public view returns(CandidateDetails[] memory){
-        return candidates;
-    }
-        function check(uint256 _num)public view returns(uint256){
-            return candidates[_num].numVotes;
-        }
     function decideWinner()public {
         for(uint256 i = 0; i<candidates.length; i++){
             if(candidates[i].numVotes > highestVotes ){
@@ -167,7 +158,17 @@ contract Voting{
         }
         
     }
-    function viewWinner(uint256 /*sum*/)public view returns (string memory name){
+    
+
+    //getter functions
+     function getCandidates()public view returns(CandidateDetails[] memory){
+        return candidates;
+    }
+        function check(uint256 _num)public view returns(uint256){
+            return candidates[_num].numVotes;
+        }
+  
+    function viewWinner()public view returns (string memory name){
         return winner;
     }
     
