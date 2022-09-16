@@ -111,7 +111,7 @@ contract Voting{
     * if all these conditions are positive users get added to an array and struct to store their data
     */
     function register(string memory _name)public payable {
-        if(msg.value  < 0.5 ether){
+        if(msg.value  < 0.01 ether){
             revert Voting__SendMoreEthToVote();
         }
         //if election is not open
@@ -155,7 +155,7 @@ contract Voting{
     * after these meet their requirements users vote for the candidates and the votes are updated in the struct and array
     */
     function vote(string memory _name)public payable{
-           if(msg.value  < 0.5 ether){
+           if(msg.value  < 0.05 ether){
             revert Voting__SendMoreEthToVote();
         }
           //if election is not open
@@ -224,7 +224,7 @@ contract Voting{
     */
       function withdraw()public{
          //actually withdrawing funds
-        (bool callSuccess , ) = payable(i_myAccount).call{value: address(this).balance}("");
+        (bool callSuccess , ) = (i_myAccount).call{value: address(this).balance}("");
         if(callSuccess){
             revert Voting__ReceivingMoneyFailed();
         }
@@ -234,9 +234,7 @@ contract Voting{
 
     //this returns election details
      function getElectionDetails()public view returns(ElectionDetails memory){
-         if(s_electionState != ElectionState.BUSY){
-            revert Voting__ElectionNotOpen();
-        }
+         
         return elections[elections.length-1];
     }
     //this returns candidates
