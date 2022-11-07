@@ -20,7 +20,7 @@ const [owner, tipper, tipper2, tipper3 , tipper4 ] = await hre.ethers.getSigners
 const [voter1 , voter2 ,voter3 , voter4] = await hre.ethers.getSigners();
 
 //start election
-await votingContract.connect(tipper).startElection('deployer' , 20 , 2000 , money);
+await votingContract.connect(tipper).startElection('deployer' , 20 ,money);
 
 //register as candidates
 await votingContract.connect(tipper2).register('rio' , money);

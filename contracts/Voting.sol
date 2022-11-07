@@ -233,9 +233,7 @@ contract Voting{
 
     //this returns election details
      function getElectionDetails()public view returns(ElectionDetails memory){
-         if(s_electionState != ElectionState.BUSY){
-            revert Voting__ElectionNotOpen();
-        }
+        
         return elections[elections.length-1];
     }
     //this returns candidates
