@@ -19,22 +19,27 @@ error Voting__ReceivingMoneyFailed();
 contract Voting{
     //type declarations
     enum ElectionState{
+
         OPEN,
         BUSY
     }
+
     struct CandidateDetails{
         string name;
         address owner;
         uint256 numVotes;
     }
+
     struct ElectionDetails{
         string title;
         uint256 registrationPeriod;
         uint256 electionEnding;
     }
+
     struct VoterDetails{
         address owner;
     }
+    
     mapping(address => VoterDetails) public addresstoVoters;
 
     ElectionDetails[]elections;
@@ -74,7 +79,7 @@ contract Voting{
     */
     
     function startElection(string memory _title , uint256 _registrationPeriod , uint256 _endingTime)public payable {
-        if(msg.value  < 0.1 ether){
+        if(msg.value  < 0.05 ether){
             revert Voting__SendMoreEthToVote();
         }
         if(s_electionState != ElectionState.OPEN){
@@ -111,7 +116,7 @@ contract Voting{
     * if all these conditions are positive users get added to an array and struct to store their data
     */
     function register(string memory _name)public payable {
-        if(msg.value  < 0.01 ether){
+        if(msg.value  < 0.02 ether){
             revert Voting__SendMoreEthToVote();
         }
         //if election is not open
