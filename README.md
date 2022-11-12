@@ -1,15 +1,8 @@
 # Basic Sample Hardhat Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+Extra funcitonalities to add to dapp
+1)picture
+2)multiple elections
+3)users will be able to view the length of the election dynamically
+4)candidates will have a dashboard 
+5)candidates receive a certain amount of eth per vote
