@@ -12,7 +12,7 @@ async function main() {
   //operations
 //statevariables
 
-const money = {value: hre.ethers.utils.parseEther("2")};
+const money = {value: hre.ethers.utils.parseEther("10")};
 //candidate accounts
 const [owner, tipper, tipper2, tipper3 , tipper4 ] = await hre.ethers.getSigners();
 

@@ -76,9 +76,9 @@ contract Voting{
     
     function startElection(string memory _title , uint256 _period)public payable {
       
-        require(msg.value < 0.05 ether , "please pay more ETH");
+        require(msg.value > 0.05 ether , "please pay more ETH");
 
-        require(s_electionState != ElectionState.OPEN , "No election in progress");
+        require(s_electionState == ElectionState.OPEN , "No election in progress");
         
         titleToElection[_title] = ElectionDetails(
             _title,
