@@ -75,12 +75,11 @@ contract Voting{
     */
     
     function startElection(string memory _title , uint256 _period)public payable {
-        if(msg.value  < 0.05 ether){
-            revert Voting__SendMoreEthToVote();
-        }
-        if(s_electionState != ElectionState.OPEN){
-            revert Voting__ElectionNotOpen();
-        }
+      
+        require(msg.value < 0.05 ether , "please pay more ETH");
+
+        require(s_electionState != ElectionState.OPEN , "No election in progress");
+        
         titleToElection[_title] = ElectionDetails(
             _title,
             _period

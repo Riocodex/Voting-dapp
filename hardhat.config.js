@@ -12,6 +12,9 @@ module.exports = {
     goerli: {
       url: GOERLI_URL,
       accounts: [PRIVATE_KEY]
+    },
+    hardhat: {
+      chainId: 1337
     }
   }
 };
