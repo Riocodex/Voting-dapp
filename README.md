@@ -1,4 +1,5 @@
-# Basic Sample Hardhat Project
+# Basic Voting App
+
 
 Extra funcitonalities to add to dapp
 1)picture
