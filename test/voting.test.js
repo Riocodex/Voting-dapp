@@ -26,8 +26,13 @@ describe('Votingapp', ()=>{
     it('views the current election details', async() => {
       // return electionDetails
         let returnElectionDetails = await votingContract.getElectionDetails();
-        console.log('Election Details are: ', returnElectionDetails);
+        
     })
 
-   
+    it('allows users to register', async()=>{
+        //register as candidates
+        await votingContract.connect(candidate1).register('rio' , money);
+        await votingContract.connect(candidate2).register('patrick' , money);
+        await votingContract.connect(candidate3).register('king' , money);
+    })
 })
