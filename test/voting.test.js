@@ -35,8 +35,12 @@ describe('Votingapp', ()=>{
         await votingContract.connect(candidate2).register('patrick' , money);
         await votingContract.connect(candidate3).register('king' , money);
 
+        //getting details from the candidates array
         let candidates = await votingContract.getCandidates();
-        console.log(candidates[0].name)
+        //comparing details
+        expect(candidates[0].name).to.be.equal('rio')
+        expect(candidates[1].name).to.be.equal('patrick')
+        expect(candidates[2].name).to.be.equal('king')
     })
     
   
