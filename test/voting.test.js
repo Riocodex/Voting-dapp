@@ -50,5 +50,11 @@ describe('Votingapp', ()=>{
         await votingContract.connect(voter4).vote('king' , money);
     })
 
+    it('picks a winner', async() =>{
+            //return winner
+        let winner = await votingContract.viewWinner();
+        
+    })
+
 
 })

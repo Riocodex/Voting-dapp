@@ -214,6 +214,7 @@ contract Voting{
         blocktimePeriod = 0;
         s_electionState = ElectionState.OPEN;
         
+        
    
     }
     /**
