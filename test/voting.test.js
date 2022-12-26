@@ -19,11 +19,12 @@ describe('Votingapp', ()=>{
     })
     it('starts election', async () =>{
            //start Election
-           let transaction = await votingContract.connect(electionOwner).startElection("sexiest",20,money)
+           let transaction = await votingContract.connect(electionOwner).startElection("president",20,money)
            await transaction.wait()
-
+            //getting details of the election
            let returnElectionDetails = await votingContract.getElectionDetails();
-           expect( returnElectionDetails.title).to.be.equal('sexiest')
+
+           expect( returnElectionDetails.title).to.be.equal('president')
     })
 
 
@@ -33,13 +34,12 @@ describe('Votingapp', ()=>{
         await votingContract.connect(candidate1).register('rio' , money);
         await votingContract.connect(candidate2).register('patrick' , money);
         await votingContract.connect(candidate3).register('king' , money);
+
+        let candidates = await votingContract.getCandidates();
+        console.log(candidates[0].name)
     })
     
-    it('allows users to view candidates of the election', async() =>{
-        //view candidates
-        //return candidates
-        let candidates = await votingContract.getCandidates();
-    })
+  
 
     it('allows users to vote', async () =>{
         //voting operation
