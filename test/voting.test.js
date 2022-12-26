@@ -19,15 +19,14 @@ describe('Votingapp', ()=>{
     })
     it('starts election', async () =>{
            //start Election
-           let transaction = await votingContract.connect(electionOwner).startElection("sexiest man",20,money)
+           let transaction = await votingContract.connect(electionOwner).startElection("sexiest",20,money)
            await transaction.wait()
+
+           let returnElectionDetails = await votingContract.getElectionDetails();
+           expect( returnElectionDetails.title).to.be.equal('sexiest')
     })
 
-    it('views the current election details', async() => {
-      // return electionDetails
-        let returnElectionDetails = await votingContract.getElectionDetails();
-        
-    })
+
 
     it('allows users to register', async()=>{
         //register as candidates
