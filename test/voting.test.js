@@ -15,9 +15,19 @@ describe('Votingapp', ()=>{
         //deploy Voting app
         const VotingContract = await ethers.getContractFactory('Voting')
         votingContract = await VotingContract.deploy()
-
-        //start Election
-        let transaction = await votingContract.connect(electionOwner).startElection("sexiest man",20,money)
-        await transaction.wait()
+        console.log(votingContract.address)
     })
+    it('starts election', async () =>{
+           //start Election
+           let transaction = await votingContract.connect(electionOwner).startElection("sexiest man",20,money)
+           await transaction.wait()
+    })
+
+    it('views the current election details', async() => {
+      // return electionDetails
+        let returnElectionDetails = await votingContract.getElectionDetails();
+        console.log('Election Details are: ', returnElectionDetails);
+    })
+
+   
 })
