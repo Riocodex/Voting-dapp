@@ -51,6 +51,13 @@ describe('Votingapp', ()=>{
         await votingContract.connect(voter2).vote('rio' , money);
         await votingContract.connect(voter3).vote('patrick' , money);
         await votingContract.connect(voter4).vote('king' , money);
+
+         //getting details from the candidates array
+         let candidates = await votingContract.getCandidates();
+
+         expect(candidates[0].numVotes).to.be.equal(2)
+         
+         
     })
 
     it('picks a winner', async() =>{
