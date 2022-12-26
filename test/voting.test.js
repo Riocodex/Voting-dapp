@@ -35,6 +35,12 @@ describe('Votingapp', ()=>{
         await votingContract.connect(candidate2).register('patrick' , money);
         await votingContract.connect(candidate3).register('king' , money);
     })
+    
+    it('allows users to view candidates of the election', async() =>{
+        //view candidates
+        //return candidates
+        let candidates = await votingContract.getCandidates();
+    })
 
     it('allows users to vote', async () =>{
         //voting operation
@@ -44,5 +50,5 @@ describe('Votingapp', ()=>{
         await votingContract.connect(voter4).vote('king' , money);
     })
 
-    
+
 })
