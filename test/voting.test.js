@@ -5,7 +5,8 @@ const money = {value: hre.ethers.utils.parseEther("10")};
 
 describe('Votingapp', ()=>{
     let electionOwner, candidate1, candidate2, candidate3, voter1, voter2,  voter3, voter4
-    let votingContract
+    let votingContract, winner
+    let highestVotes = 0
 
     it('saves the addresses', async() =>{
 
@@ -64,8 +65,22 @@ describe('Votingapp', ()=>{
     })
 
     it('picks a winner', async() =>{
+        let candidates = await votingContract.getCandidates();
             //return winner
-        let winner = await votingContract.viewWinner();
+            for(var i = 0; i<candidates.length; i++){
+                if(candidates[i].numVotes > highestVotes ){
+                    highestVotes = candidates[i].numVotes ;   
+                }
+            }
+
+            for(var i = 0; i< candidates.length; i++){
+                if(candidates[i]. numVotes == highestVotes){
+                    winner = candidates[i].name;
+                }
+                
+            }
+            //since winner is rio cuz he has highest votes
+            expect(winner).to.be.equal('rio')
         
     })
 
