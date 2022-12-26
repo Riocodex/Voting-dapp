@@ -55,8 +55,11 @@ describe('Votingapp', ()=>{
          //getting details from the candidates array
          let candidates = await votingContract.getCandidates();
 
-         expect(candidates[0].numVotes).to.be.equal(2)
-         
+         expect(candidates[0].numVotes).to.be.equal(2)//for rio
+         expect(candidates[1].numVotes).to.be.equal(1)//for patrick
+         expect(candidates[2].numVotes).to.be.equal(1)//for king
+
+
          
     })
 
