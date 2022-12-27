@@ -9,8 +9,14 @@ async function main(){
 
     const [person] = await hre.ethers.getSigners();
 
-    await viewContract.connect(person).multiplyTwoNumbers(2,2)
+    await viewContract.multiplyTwoNumbers(2,2)
 
     let result = await viewContract.seeResult()
     console.log("this is the result",result)
 }
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
