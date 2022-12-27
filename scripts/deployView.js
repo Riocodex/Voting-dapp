@@ -1,7 +1,7 @@
 const hre = require("hardhat")
 
 async function main(){
-    const ViewContractFactory = await hre.ethers.getContractFactory("Voting")
+    const ViewContractFactory = await hre.ethers.getContractFactory("View")
     const viewContract = await ViewContractFactory.deploy()
     await viewContract.deployed()
 
@@ -9,7 +9,7 @@ async function main(){
 
     const [person] = await hre.ethers.getSigners();
 
-    await viewContract.multiplyTwoNumbers(2,2)
+    await viewContract.connect(person).multiplyTwoNumbers(2,2)
 
     let result = await viewContract.seeResult()
     console.log("this is the result",result)
