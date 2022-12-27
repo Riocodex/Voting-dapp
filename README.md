@@ -11,7 +11,6 @@
 
 ### 3. Deploy Contract
 `$ yarn hardhat run scripts/deploy.js`
-
 ### 4. Start Hardhat node
 `$ npx hardhat node`
 
