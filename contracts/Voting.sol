@@ -78,7 +78,7 @@ contract Voting{
       
         require(msg.value > 0, "not enough ETH");
 
-        require(s_electionState == ElectionState.OPEN , "No election in progress");
+        // require(s_electionState == ElectionState.OPEN , "There is an election in progress");
         
         titleToElection[_title] = ElectionDetails(
             _title,
