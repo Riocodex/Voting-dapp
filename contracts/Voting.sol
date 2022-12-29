@@ -23,6 +23,7 @@ contract Voting{
         BUSY
     }
     struct CandidateDetails{
+        uint256 candidateId;
         string name;
         address owner;
         uint256 numVotes;
@@ -59,6 +60,7 @@ contract Voting{
     string[] public candidateNames;
     uint256 time;
     uint256 blocktimePeriod;
+    uint256 canId;
 
     
 
@@ -131,14 +133,18 @@ contract Voting{
                 revert Voting__UserAlreadyExists();
             }
         }
+
+        canId++;
         
         
         numToCandidate[_name]=CandidateDetails(
+            canId,
             _name,
             msg.sender,
             votes
         );
         candidates.push(CandidateDetails(
+            canId,
             _name,
             msg.sender,
             votes
